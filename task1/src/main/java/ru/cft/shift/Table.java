@@ -3,17 +3,15 @@ package ru.cft.shift;
 public class Table {
 
     private StringBuilder LineSb = new StringBuilder();
-    private int countDigit_a;
-    private int countDigit_b;
+    private int countDigit_a = 0;
     private int countDigit_ab;
 
 
-    void getCountDigit (int a, int b){
+    private void getCountDigit (int a, int b){
         countDigit_a = getNUm(a);
-        countDigit_b = getNUm(b);
         countDigit_ab = getNUm(a * b);
     }
-    int getNUm(int number) {
+    private int getNUm(int number) {
         int numbersCount = 0;
         do {
             numbersCount++;
@@ -22,48 +20,47 @@ public class Table {
         return numbersCount;
     }
 
-    void printSymbol(String symbol) {
+    private void printSymbol(String symbol) {
         System.out.print(symbol);
     }
 
-    void getLine(int a, int b) {
-        int len = b * (getNUm(a * b) + 1) - getNUm(b);
-        int k = len + getNUm(a) - 1;
-        for (int i = 0; i < getNUm(b); i++) LineSb.append("-");
-        LineSb.append("+");
-        while(k != 0) {
-            if (k % (getNUm(a * b) + 1) != 0) {
+    private void getLine(int b) {
+        int len = b * (countDigit_ab + 1);
+        for (int i = 0; i < countDigit_a; i++) LineSb.append("-");
+        while(len != 0) {
+            if (len % (countDigit_ab + 1) != 0) {
                 LineSb.append("-");
             } else {
                 LineSb.append("+");
             }
-            k--;
+            len--;
         }
     }
 
     void getMulTable(int a, int b) {
-        getLine(a, b);
-        getCountDigit(a, b);
+        getCountDigit(a, b); // проведение предварительных расчетов
+        getLine(b); // формирование промежуточной линии
         for (int i = 0; i <= a; i++) {
             for (int j = 0; j <= b; j++) {
-
-                if (j*i != 0) {
-                    for (int z = 0; z < getNUm(a * b) - getNUm(i * j); z++) printSymbol(" ");
-                    System.out.print(i * j);
-                    if (j != b) printSymbol("|");
+                if (j * i != 0) {
+                    for (int z = 0; z < countDigit_ab - getNUm(i * j); z++) printSymbol(" "); // печать пробелов в ячейках
+                    System.out.print(i * j); // печать результата умножения
                 } else {
-                    if (j != 0) for (int z = 0; z < getNUm(a * b) - getNUm(1 * j); z++) printSymbol(" ");
+                    if (j != 0) for (int z = 0; z < countDigit_ab - getNUm(1 * j); z++) printSymbol(" "); // печать пробелов верхнего ряда
                     if (j != 0) {
-                        System.out.print(j);
+                        System.out.print(j); // печать верхней шапки
                     } else {
-                        for (int z = 0; z < getNUm(a) - getNUm(i * 1); z++) printSymbol(" ");
-                        System.out.print(i);
+                        for (int z = 0; z < countDigit_a - getNUm(i * 1); z++) printSymbol(" "); // печать пробелов левого ряда
+                        if (i != 0) {
+                            System.out.print(i); // печать левой колонки
+                        } else {
+                            printSymbol(" "); // печать пробела вмето ноля в левом вепхнем углу.
+                        }
                     }
-                    if (j != b) printSymbol("|");
                 }
+                if (j != b) printSymbol("|"); // не ставим bar в конце
             }
             System.out.print("\n" + LineSb + "\n");
         }
     }
-
 }

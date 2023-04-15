@@ -4,18 +4,16 @@ public class Main {
     public static void main(String[] args) {
         try {
             for (String str : args) {
-//                System.out.println("аргумент = " + Integer.valueOf(str));
                 Integer.valueOf(str);
+//                if ( Integer.valueOf(str) < 0) {
+//
+//                }
             }
-
-            int a = Integer.valueOf(args[0]);
-            int b = Integer.valueOf(args[1]);
-
             Table Result = new Table();
-            Result.getMulTable(a, b);
+            Result.getMulTable(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
 
         } catch (NumberFormatException e) {
-            System.out.println("Аргумент должен быть числом");
+            System.out.println("Аргумент должен быть положительным числом от 1 до 32");
         }
 
     }
